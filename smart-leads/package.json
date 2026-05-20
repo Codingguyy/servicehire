@@ -10,7 +10,7 @@
     "build:backend": "npx tsc -p tsconfig.backend.json",
     "build:frontend": "npx vite build frontend",
     "start": "node dist/backend/index.js"
-  },,
+  },
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
