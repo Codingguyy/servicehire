@@ -1,0 +1,15 @@
+FROM node:20-alpine AS builder
+WORKDIR /app
+COPY package*.json tsconfig.backend.json ./
+RUN npm ci
+COPY backend ./backend
+RUN npm run build:backend
+
+FROM node:20-alpine
+WORKDIR /app
+ENV NODE_ENV=production
+COPY package*.json ./
+RUN npm ci --omit=dev
+COPY --from=builder /app/dist/backend ./dist/backend
+EXPOSE 5000
+CMD ["node", "dist/backend/index.js"]
