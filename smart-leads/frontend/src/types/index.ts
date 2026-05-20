@@ -4,6 +4,7 @@ export type LeadSource = 'Website' | 'Instagram' | 'Referral'
 export type SortOrder = 'latest' | 'oldest'
 
 export interface User {
+  _id?: string
   id: string
   name: string
   email: string
