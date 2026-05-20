@@ -102,7 +102,7 @@ export const DashboardPage:React.FC =() =>{
         <LeadForm onSubmit={handleCreate} onCancel={() => setShowCreate(false)} isLoading={formLoading} />
       </Modal>
       <Modal isOpen={!!editLead} onClose={() => setEditLead(null)} title="Edit Lead">
-        <LeadForm initialData={editLead ? { name: editLead.name, email: editLead.email, status: editLead.status, source: editLead.source, assignedTo: typeof editLead.assignedTo === 'object' && editLead.assignedTo ? editLead.assignedTo.id : undefined } : undefined} onSubmit={handleUpdate} onCancel={() => setEditLead(null)} isLoading={formLoading} />
+        <LeadForm initialData={editLead ? { name: editLead.name, email: editLead.email, status: editLead.status, source: editLead.source, assignedTo: typeof editLead.assignedTo === 'object' && editLead.assignedTo ? (editLead.assignedTo._id ?? editLead.assignedTo.id) : undefined } : undefined} onSubmit={handleUpdate} onCancel={() => setEditLead(null)} isLoading={formLoading} />
       </Modal>
       <ConfirmDialog isOpen={!!deleteLead} onClose={() => setDeleteLead(null)} onConfirm={handleDelete} title="Delete Lead" message={`Delete "${deleteLead?.name}"? This cannot be undone.`} isLoading={deleteLoading} />
     </div>
