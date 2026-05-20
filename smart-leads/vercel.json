@@ -3,6 +3,7 @@
   "outputDirectory": "dist/frontend",
   "installCommand": "npm install",
   "rewrites": [
+    { "source": "/api/(.*)", "destination": "https://servicehive-wxw9.onrender.com/api/$1" },
     { "source": "/(.*)", "destination": "/index.html" }
   ]
 }
