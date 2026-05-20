@@ -2,15 +2,16 @@
   "name": "smart-leads-dashboard",
   "version": "1.0.0",
   "private": true,
-  "scripts": {
-    "dev": "npx concurrently \"npm run dev:backend\" \"npm run dev:frontend\"",
-    "dev:backend": "npx ts-node-dev --respawn --transpile-only --project tsconfig.backend.json backend/index.ts",
-    "dev:frontend": "npx vite frontend",
-    "build": "npm run build:backend && npm run build:frontend",
-    "build:backend": "npx tsc -p tsconfig.backend.json",
-    "build:frontend": "npx vite build frontend",
-    "start": "node dist/backend/index.js"
-  },
+ "scripts": {
+  "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\"",
+
+  "dev:backend": "npx ts-node-dev --respawn --transpile-only --project tsconfig.backend.json backend/index.ts",
+  "dev:frontend": "npx vite frontend",
+
+  "build": "vite build frontend",
+
+  "start": "node dist/backend/index.js"
+},
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
