@@ -63,7 +63,7 @@ export const LeadForm: React.FC<Props> =({initialData, onSubmit, onCancel, isLoa
         <Select label="Source" value={form.source} onChange={set('source')} options={SOURCE_OPTS} error={errors.source} />
       </div>
       {user?.role === 'admin' && users.length > 0 && (
-        <Select label="Assign To" value={form.assignedTo ?? ''} onChange={set('assignedTo')} options={users.map(u => ({ value: u.id, label: `${u.name} (${u.role})` }))} placeholder="— Unassigned —" />
+        <Select label="Assign To" value={form.assignedTo ?? ''} onChange={set('assignedTo')} options={users.map(u => ({ value: u._id ?? u.id, label: `${u.name} (${u.role})` }))} placeholder="— Unassigned —" />
       )}
       <div className="flex justify-end gap-2 pt-1">
         <Button type="button" variant="secondary" size="sm" onClick={onCancel} disabled={isLoading}>Cancel</Button>
