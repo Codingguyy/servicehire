@@ -2,13 +2,14 @@
   "name": "smart-leads-dashboard",
   "version": "1.0.0",
   "private": true,
- "scripts": {
+"scripts": {
   "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\"",
 
   "dev:backend": "npx ts-node-dev --respawn --transpile-only --project tsconfig.backend.json backend/index.ts",
-  "dev:frontend": "npx vite frontend",
 
-  "build": "vite build frontend",
+  "dev:frontend": "npx vite",
+
+  "build": "vite build",
 
   "start": "node dist/backend/index.js"
 },
