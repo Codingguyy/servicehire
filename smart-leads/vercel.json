@@ -1,4 +1,7 @@
 {
+  "buildCommand": "npx vite build frontend",
+  "outputDirectory": "dist/frontend",
+  "installCommand": "npm install",
   "rewrites": [
     { "source": "/(.*)", "destination": "/index.html" }
   ]
