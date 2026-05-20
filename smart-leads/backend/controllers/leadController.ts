@@ -3,7 +3,7 @@ import Lead from '../models/Lead'
 import { AuthRequest, LeadQuery } from '../types'
 import { ok, created, fail } from '../utils/response'
 
-
+// Build the base filter for sales users: they see leads assigned to them OR created by them
 function salesFilter(userId: string): Record<string, unknown> {
   return { $or: [{ assignedTo: userId }, { createdBy: userId }] }
 }
@@ -22,13 +22,15 @@ export const getLeads = async (req: AuthRequest, res: Response, next: NextFuncti
   try {
     const { status, source, search, sort = 'latest', page = '1', limit = '10' } = req.query as LeadQuery
 
-    
+    // Start with role-based filter
     const filter: Record<string, unknown> = {}
     if (req.user?.role === 'sales') {
-      
+      // Sales: only see leads assigned to them OR created by them
       filter.$or = [{ assignedTo: req.user.id }, { createdBy: req.user.id }]
     }
 
+    // Apply additional filters — but if we already have $or from sales filter,
+    // we need to wrap both into $and to avoid clobbering
     const conditions: Record<string, unknown>[] = []
     if (req.user?.role === 'sales') {
       conditions.push({ $or: [{ assignedTo: req.user.id }, { createdBy: req.user.id }] })
@@ -57,7 +59,7 @@ export const getLeadById = async (req: AuthRequest, res: Response, next: NextFun
   try {
     const lead = await Lead.findById(req.params.id).populate('createdBy', 'name email role').populate('assignedTo', 'name email role')
     if (!lead) { fail(res, 404, 'Lead not found'); return }
-    
+    // Sales can view if they created it OR it is assigned to them
     if (req.user?.role === 'sales') {
       const isCreator = lead.createdBy._id.toString() === req.user.id
       const isAssigned = lead.assignedTo?._id?.toString() === req.user.id
@@ -71,7 +73,7 @@ export const updateLead = async (req: AuthRequest, res: Response, next: NextFunc
   try {
     const lead = await Lead.findById(req.params.id)
     if (!lead) { fail(res, 404, 'Lead not found'); return }
-    
+    // Sales can update only leads they created OR are assigned to
     if (req.user?.role === 'sales') {
       const isCreator = lead.createdBy.toString() === req.user.id
       const isAssigned = lead.assignedTo?.toString() === req.user.id
@@ -83,7 +85,7 @@ export const updateLead = async (req: AuthRequest, res: Response, next: NextFunc
     if (email !== undefined) updatePayload.email = email
     if (status !== undefined) updatePayload.status = status
     if (source !== undefined) updatePayload.source = source
-    
+    // Allow clearing assignedTo by sending null/empty string, or setting a new one
     if (assignedTo !== undefined) {
       updatePayload.assignedTo = assignedTo && assignedTo !== '' ? assignedTo : null
     }
